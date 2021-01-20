@@ -1,0 +1,107 @@
+{
+  "version": 2,
+  "projects": {
+    "cheap-roulette-next": {
+      "root": "apps/cheap-roulette-next",
+      "sourceRoot": "apps/cheap-roulette-next",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/next:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "root": "apps/cheap-roulette-next",
+            "outputPath": "dist/apps/cheap-roulette-next"
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/next:server",
+          "options": {
+            "buildTarget": "cheap-roulette-next:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "cheap-roulette-next:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "executor": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "cheap-roulette-next:build:production"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/cheap-roulette-next/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/cheap-roulette-next"
+          ],
+          "options": {
+            "jestConfig": "apps/cheap-roulette-next/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "cheap-roulette-next-e2e": {
+      "root": "apps/cheap-roulette-next-e2e",
+      "sourceRoot": "apps/cheap-roulette-next-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/cheap-roulette-next-e2e/cypress.json",
+            "tsConfig": "apps/cheap-roulette-next-e2e/tsconfig.e2e.json",
+            "devServerTarget": "cheap-roulette-next:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "cheap-roulette-next:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/cheap-roulette-next-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/next"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "styled-components",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "cheap-roulette-next"
+}

@@ -1,0 +1,25 @@
+{
+  "npmScope": "cheap-roulette",
+  "affected": { "defaultBase": "master" },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+    }
+  },
+  "projects": {
+    "cheap-roulette-next": { "tags": [] },
+    "cheap-roulette-next-e2e": {
+      "tags": [],
+      "implicitDependencies": ["cheap-roulette-next"]
+    }
+  }
+}
