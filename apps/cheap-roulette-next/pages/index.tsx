@@ -4,13 +4,14 @@ import { User } from '../types/user';
 import { object, string } from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
+import { API_URL } from '../environments';
 
 type FormType = {
   name: string;
 };
 
 export function Index() {
-  const { data: users } = useSWR<User[]>('http://localhost:1323/users');
+  const { data: users } = useSWR<User[]>(`${API_URL}/users`);
 
   const schema = object().shape({
     name: string().required().max(5),
@@ -21,7 +22,7 @@ export function Index() {
   });
 
   const onSubmit = async ({ name }: FormType) => {
-    await fetch('http://localhost:1323/users', {
+      await fetch(`${API_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,18 +30,18 @@ export function Index() {
       body: JSON.stringify({ name: name }),
     });
 
-    await mutate('http://localhost:1323/users');
+    await mutate(`${API_URL}/users`);
 
     reset();
   };
 
   const handleDelete = useCallback(
     (id) => async () => {
-      await fetch(`http://localhost:1323/users/${id}`, {
+      await fetch(`${API_URL}/users/${id}`, {
         method: 'DELETE',
       });
 
-      await mutate('http://localhost:1323/users');
+      await mutate(`${API_URL}/users`);
     },
     []
   );
