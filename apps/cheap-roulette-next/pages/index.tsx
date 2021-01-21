@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import { API_URL } from '../environments';
 
+import { Button } from '@material-ui/core';
+
 type FormType = {
   name: string;
 };
@@ -57,7 +59,9 @@ export function Index() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <input type={'text'} name={'name'} ref={register} />
         {JSON.stringify(errors)}
-        <button type={'submit'}>Entry</button>
+        <Button type={'submit'} color={'primary'}>
+          Entry
+        </Button>
       </form>
       {users.map((user) => (
         <li key={user.id}>
