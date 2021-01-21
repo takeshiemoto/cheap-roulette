@@ -3,7 +3,7 @@ import useSWR, { mutate } from 'swr';
 import { User } from '../types/user';
 import { object, string } from 'yup';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from "@hookform/resolvers"
+import { yupResolver } from '@hookform/resolvers';
 
 type FormType = {
   name: string;
@@ -24,23 +24,26 @@ export function Index() {
     await fetch('http://localhost:1323/users', {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: name }),
     });
 
-    await mutate('http://localhost:1323/users')
+    await mutate('http://localhost:1323/users');
 
-    reset()
+    reset();
   };
 
-  const handleDelete = useCallback((id) => async () => {
-    await fetch(`http://localhost:1323/users/${id}`, {
-      method: 'DELETE',
-    });
+  const handleDelete = useCallback(
+    (id) => async () => {
+      await fetch(`http://localhost:1323/users/${id}`, {
+        method: 'DELETE',
+      });
 
-    await mutate('http://localhost:1323/users')
-  }, [])
+      await mutate('http://localhost:1323/users');
+    },
+    []
+  );
 
   if (!users) {
     return <div>Loading...</div>;
