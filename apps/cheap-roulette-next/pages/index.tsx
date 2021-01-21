@@ -10,11 +10,13 @@ type FormType = {
   name: string;
 };
 
+const MAX_NAME_LENGTH = 12;
+
 export function Index() {
   const { data: users } = useSWR<User[]>(`${API_URL}/users`);
 
   const schema = object().shape({
-    name: string().required().max(5),
+    name: string().required().max(MAX_NAME_LENGTH),
   });
 
   const { register, handleSubmit, reset, errors } = useForm<FormType>({
