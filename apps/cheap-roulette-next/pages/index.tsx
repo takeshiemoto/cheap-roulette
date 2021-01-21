@@ -22,7 +22,7 @@ export function Index() {
   });
 
   const onSubmit = async ({ name }: FormType) => {
-      await fetch(`${API_URL}/users`, {
+    await fetch(`${API_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
