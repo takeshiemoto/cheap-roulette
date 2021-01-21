@@ -1,12 +1,25 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import useSWR, { mutate } from 'swr';
 import { User } from '../types/user';
 import { object, string } from 'yup';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import { API_URL } from '../environments';
 
-import { Button } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  TextField,
+} from '@material-ui/core';
+
+import { Delete } from '@material-ui/icons';
 
 type FormType = {
   name: string;
@@ -18,12 +31,20 @@ export function Index() {
   const { data: users } = useSWR<User[]>(`${API_URL}/users`);
 
   const schema = object().shape({
-    name: string().required().max(MAX_NAME_LENGTH),
+    name: string().required('名前を入力してください').max(MAX_NAME_LENGTH),
   });
 
-  const { register, handleSubmit, reset, errors } = useForm<FormType>({
-    resolver: yupResolver(schema),
-  });
+  const { control, handleSubmit, reset, errors, formState } = useForm<FormType>(
+    {
+      resolver: yupResolver(schema),
+      mode: 'onChange',
+      defaultValues: {
+        name: '',
+      },
+    }
+  );
+
+  const nameRef = useRef<HTMLInputElement | null>();
 
   const onSubmit = async ({ name }: FormType) => {
     await fetch(`${API_URL}/users`, {
@@ -37,6 +58,8 @@ export function Index() {
     await mutate(`${API_URL}/users`);
 
     reset();
+
+    nameRef.current.focus();
   };
 
   const handleDelete = useCallback(
@@ -55,21 +78,57 @@ export function Index() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type={'text'} name={'name'} ref={register} />
-        {JSON.stringify(errors)}
-        <Button type={'submit'} color={'primary'}>
-          Entry
-        </Button>
-      </form>
-      {users.map((user) => (
-        <li key={user.id}>
-          {user.name}
-          <button onClick={handleDelete(user.id)}>x</button>
-        </li>
-      ))}
-    </div>
+    <Container maxWidth={'sm'}>
+      <Box mt={5}>
+        <Grid container spacing={2} alignItems={'center'}>
+          <Grid item xs={12}>
+            <Controller
+              control={control}
+              as={
+                <TextField
+                  label={'Name'}
+                  variant={'outlined'}
+                  size={'small'}
+                  disabled={formState.isSubmitting}
+                  error={!!errors?.name}
+                  helperText={errors?.name?.message}
+                  required
+                  fullWidth
+                  inputRef={nameRef}
+                />
+              }
+              name={'name'}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant={'contained'}
+              color={'primary'}
+              fullWidth
+              onClick={handleSubmit(onSubmit)}
+            >
+              Entry
+            </Button>
+          </Grid>
+        </Grid>
+        <List>
+          {users.map((user) => (
+            <ListItem key={user.id}>
+              <ListItemText>{user.name}</ListItemText>
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={handleDelete(user.id)}
+                >
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Container>
   );
 }
 
