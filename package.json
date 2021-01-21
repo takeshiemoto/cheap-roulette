@@ -37,7 +37,8 @@
     "styled-components": "5.2.1",
     "swr": "^0.4.0",
     "tslib": "^2.0.0",
-    "yup": "^0.32.8"
+    "yup": "^0.32.8",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",
