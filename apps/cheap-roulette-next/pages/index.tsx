@@ -14,12 +14,13 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   TextField,
 } from '@material-ui/core';
 
-import { Delete } from '@material-ui/icons';
+import { Delete, Face } from '@material-ui/icons';
 
 type FormType = {
   name: string;
@@ -113,7 +114,10 @@ export function Index() {
         </Grid>
         <List>
           {users.map((user) => (
-            <ListItem key={user.id}>
+            <ListItem key={user.id} divider>
+              <ListItemIcon>
+                <Face />
+              </ListItemIcon>
               <ListItemText>{user.name}</ListItemText>
               <ListItemSecondaryAction>
                 <IconButton
