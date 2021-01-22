@@ -1,18 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import { SWRConfig } from 'swr';
-import { ThemeProvider } from 'styled-components';
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 
 function CustomApp({ Component, pageProps }: AppProps) {
-  const darkTheme = createMuiTheme({
-    palette: {
-      type: 'light',
-    },
-  });
-
+  const theme = createMuiTheme({ palette: { type: 'dark' } });
   return (
     <>
       <Head>
@@ -25,7 +19,8 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <SWRConfig
         value={{ fetcher: (args) => fetch(args).then((res) => res.json()) }}
       >
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
       </SWRConfig>
