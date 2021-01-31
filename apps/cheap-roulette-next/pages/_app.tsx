@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import { SWRConfig } from 'swr';
 import {
   AppBar,
+  BottomNavigation,
+  BottomNavigationAction,
   createMuiTheme,
   CssBaseline,
   IconButton,
@@ -12,10 +14,19 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { GitHub } from '@material-ui/icons';
+import { GitHub, Shuffle } from '@material-ui/icons';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   const theme = createMuiTheme({ palette: { type: 'dark' } });
+
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
+
   return (
     <>
       <Head>

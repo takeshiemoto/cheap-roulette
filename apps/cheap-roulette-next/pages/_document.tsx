@@ -1,20 +1,28 @@
 import React, { ReactElement } from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheets } from '@material-ui/core';
 
 export default class CustomDocument extends Document<{
   styleTags: ReactElement[];
 }> {
-  static getInitialProps({ renderPage }) {
-    const sheet = new ServerStyleSheet();
+  static async getInitialProps(ctx) {
+    const sheets = new ServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
 
-    const page = renderPage((App) => (props) =>
-      sheet.collectStyles(<App {...props} />)
-    );
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+      });
 
-    const styleTags = sheet.getStyleElement();
+    const initialProps = await Document.getInitialProps(ctx);
 
-    return { ...page, styleTags };
+    return {
+      ...initialProps,
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheets.getStyleElement(),
+      ],
+    };
   }
 
   render() {
