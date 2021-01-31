@@ -20,6 +20,7 @@
     "cheap-roulette-next-e2e": {
       "tags": [],
       "implicitDependencies": ["cheap-roulette-next"]
-    }
+    },
+    "http": { "tags": [] }
   }
 }
