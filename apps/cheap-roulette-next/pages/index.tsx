@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers';
 import { API_URL } from '../environments';
 
 import {
+  BottomNavigation,
+  BottomNavigationAction,
   Box,
   Button,
   Container,
@@ -20,7 +22,7 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import { Delete, Face } from '@material-ui/icons';
+import { Delete, Face, Shuffle } from '@material-ui/icons';
 
 type FormType = {
   name: string;
@@ -74,65 +76,69 @@ export function Index() {
     []
   );
 
-  if (!users) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <Container maxWidth={'sm'}>
-      <Box mt={5}>
-        <Grid container spacing={2} alignItems={'center'}>
-          <Grid item xs={12}>
-            <Controller
-              control={control}
-              as={
-                <TextField
-                  label={'Name'}
-                  variant={'outlined'}
-                  size={'small'}
-                  disabled={formState.isSubmitting}
-                  error={!!errors?.name}
-                  helperText={errors?.name?.message}
-                  required
-                  fullWidth
-                  inputRef={nameRef}
-                />
-              }
-              name={'name'}
-            />
+    <>
+      <Container maxWidth={'sm'}>
+        <Box mt={5}>
+          <Grid container spacing={2} alignItems={'center'}>
+            <Grid item xs={12}>
+              <Controller
+                control={control}
+                as={
+                  <TextField
+                    label={'Name'}
+                    variant={'outlined'}
+                    size={'small'}
+                    disabled={formState.isSubmitting}
+                    error={!!errors?.name}
+                    helperText={errors?.name?.message}
+                    required
+                    fullWidth
+                    inputRef={nameRef}
+                  />
+                }
+                name={'name'}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant={'contained'}
+                color={'primary'}
+                fullWidth
+                onClick={handleSubmit(onSubmit)}
+              >
+                Entry
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              variant={'contained'}
-              color={'primary'}
-              fullWidth
-              onClick={handleSubmit(onSubmit)}
-            >
-              Entry
-            </Button>
-          </Grid>
-        </Grid>
-        <List>
-          {users.map((user) => (
-            <ListItem key={user.id} divider>
-              <ListItemIcon>
-                <Face />
-              </ListItemIcon>
-              <ListItemText>{user.name}</ListItemText>
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={handleDelete(user.id)}
-                >
-                  <Delete />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Container>
+          {users && (
+            <List>
+              {users.map((user) => (
+                <ListItem key={user.id} divider>
+                  <ListItemIcon>
+                    <Face />
+                  </ListItemIcon>
+                  <ListItemText>{user.name}</ListItemText>
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={handleDelete(user.id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Box>
+      </Container>
+      <BottomNavigation style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <BottomNavigationAction label={'start'} value={'START'} showLabel />
+        <BottomNavigationAction label={'reset'} value={'RESET'} showLabel />
+      </BottomNavigation>
+    </>
   );
 }
 
