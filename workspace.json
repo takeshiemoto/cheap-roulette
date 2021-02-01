@@ -8,9 +8,7 @@
       "targets": {
         "build": {
           "executor": "@nrwl/next:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "root": "apps/cheap-roulette-next",
             "outputPath": "dist/apps/cheap-roulette-next"
@@ -48,9 +46,7 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/cheap-roulette-next"
-          ],
+          "outputs": ["coverage/apps/cheap-roulette-next"],
           "options": {
             "jestConfig": "apps/cheap-roulette-next/jest.config.js",
             "passWithNoTests": true
@@ -79,9 +75,28 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "apps/cheap-roulette-next-e2e/**/*.{js,ts}"
-            ]
+            "lintFilePatterns": ["apps/cheap-roulette-next-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "http": {
+      "root": "libs/http",
+      "sourceRoot": "libs/http/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/http/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/http"],
+          "options": {
+            "jestConfig": "libs/http/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
